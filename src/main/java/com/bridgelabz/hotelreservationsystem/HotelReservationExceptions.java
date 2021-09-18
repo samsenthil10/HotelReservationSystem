@@ -8,7 +8,7 @@ public class HotelReservationExceptions extends RuntimeException {
 		NAME_ENTERED_NULL,
 		NAME_ENTERED_EMPTY,
 		RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,
-		RATE_FOR_REGULAR_CUSTOMER_ENTERED_EMPTY
+		RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE
 	}
 
 	exceptionType type;
@@ -16,5 +16,6 @@ public class HotelReservationExceptions extends RuntimeException {
 	public HotelReservationExceptions(String message, exceptionType type) {
 		super(message);
 		this.type = type;
+		System.out.println(message);
 	}
 }
