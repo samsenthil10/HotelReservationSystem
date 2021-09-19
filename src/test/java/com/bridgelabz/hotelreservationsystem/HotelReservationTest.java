@@ -152,8 +152,8 @@ public class HotelReservationTest {
 
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
-		Assert.assertTrue(hotelName.equalsIgnoreCase("Lakewood"));
+		ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
+		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Total Price: 220"));
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
 		}
 		catch(HotelReservationExceptions e) {
 
@@ -178,7 +178,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
 
@@ -193,7 +193,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
 		}
 		catch(HotelReservationExceptions e) {
 
@@ -208,7 +208,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
 
@@ -223,7 +223,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sep/2020","11Sep2020");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sep/2020","11Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
 			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
@@ -237,7 +237,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			@SuppressWarnings("unused")
-			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11/Sep/2020");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11/Sep/2020");
 		}
 		catch(HotelReservationExceptions e) {
 			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
@@ -249,7 +249,7 @@ public class HotelReservationTest {
 
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotelForBothWeekdayAndWeekend(listOfHotels, "11Sep2020", "12Sep2020");
+		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
 		Assert.assertTrue(("Hotel Name: LakeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0)))&&("Hotel Name: BridgeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(1))));
 	}
 }
