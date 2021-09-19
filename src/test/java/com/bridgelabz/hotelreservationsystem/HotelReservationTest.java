@@ -1,7 +1,7 @@
 package com.bridgelabz.hotelreservationsystem;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -242,5 +242,14 @@ public class HotelReservationTest {
 		catch(HotelReservationExceptions e) {
 			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
 		}
+	}
+	
+	@Test
+	public void givenProperDates_WhenFindingCheapestHotelForBothWeekdayAndWeekend_ShouldReturnNameOfCheapestHotel() {
+
+		LinkedHashSet<Hotel> listOfHotels = hotelList();
+		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotelForBothWeekdayAndWeekend(listOfHotels, "11Sep2020", "12Sep2020");
+		Assert.assertTrue(("Hotel Name: LakeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0)))&&("Hotel Name: BridgeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(1))));
 	}
 }
