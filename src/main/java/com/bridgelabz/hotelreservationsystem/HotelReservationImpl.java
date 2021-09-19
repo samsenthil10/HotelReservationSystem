@@ -14,14 +14,44 @@ import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptio
 
 public class HotelReservationImpl implements HotelReservationIF {
 
-	public static int calculateTotalRate(Hotel hotel, int numberOfWeekdays, int numberOfWeekends) {
+	@Override
+	public  LinkedHashSet<Hotel> hotelListForCustomer() {
+		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+		Hotel hotel = new Hotel();
+		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90, 3);
+		listOfHotels.add(hotel);
+		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150, 50, 4);
+		listOfHotels.add(hotel);
+		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220, 150, 5);
+		listOfHotels.add(hotel);
+		return listOfHotels;
+	}
+
+	@Override
+	public  LinkedHashSet<Hotel> hotelListForRewardCustomer() {
+		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+		Hotel hotel = new Hotel();
+		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		hotel = hotelReservationOperations.addNewHotel("LakeWood", 80, 80, 3);
+		listOfHotels.add(hotel);
+		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 110, 50, 4);
+		listOfHotels.add(hotel);
+		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 100, 40, 5);
+		listOfHotels.add(hotel);
+		return listOfHotels;
+	}
+
+	@Override
+	public int calculateTotalRate(Hotel hotel, int numberOfWeekdays, int numberOfWeekends) {
 
 		int totalRate=0;
-		totalRate = ((hotel.getWeekdayRatesForRegularCustomer()*numberOfWeekdays)+(hotel.getWeekendRatesForRegularCustomer()*numberOfWeekends));
+		totalRate = ((hotel.getWeekdayRatesForCustomer()*numberOfWeekdays)+(hotel.getWeekendRatesForCustomer()*numberOfWeekends));
 		return totalRate;
 	}
 
-	public static int calculateTotalWeekDays(LocalDate start, LocalDate end) {
+	@Override
+	public int calculateTotalWeekDays(LocalDate start, LocalDate end) {
 
 		int startDate = start.getDayOfWeek().getValue();
 		int endDate = end.getDayOfWeek().getValue();
@@ -42,7 +72,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 	}
 
 	@Override
-	public Hotel addNewHotel(String name,Integer weekdayRatesForRegularCustomer, Integer weekendRatesForRegularCustomer, Integer rating) {
+	public Hotel addNewHotel(String name,Integer weekdayRatesForCustomer, Integer weekendRatesForCustomer, Integer rating) {
 
 		Hotel hotel = new Hotel();
 		try {
@@ -57,21 +87,21 @@ public class HotelReservationImpl implements HotelReservationIF {
 		}
 		try {
 
-			if(weekdayRatesForRegularCustomer < 0)
-				throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,"Weekday Rates for regular customer cannot be Negative!");
-			hotel.setWeekdayRatesForRegularCustomer(weekdayRatesForRegularCustomer);
+			if(weekdayRatesForCustomer < 0)
+				throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_CUSTOMER_ENTERED_NEGATIVE,"Weekday Rates for customer cannot be Negative!");
+			hotel.setWeekdayRatesForCustomer(weekdayRatesForCustomer);
 		}
 		catch(NullPointerException e) {
-			throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Weekday Rates for regular customer cannot be Null!");
+			throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_CUSTOMER_ENTERED_NULL,"Weekday Rates for customer cannot be Null!");
 		}
 		try {
 
-			if(weekendRatesForRegularCustomer < 0)
-				throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,"Weekend Rates for regular customer cannot be Negative!");
-			hotel.setWeekendRatesForRegularCustomer(weekendRatesForRegularCustomer);
+			if(weekendRatesForCustomer < 0)
+				throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_CUSTOMER_ENTERED_NEGATIVE,"Weekend Rates for customer cannot be Negative!");
+			hotel.setWeekendRatesForCustomer(weekendRatesForCustomer);
 		}
 		catch(NullPointerException e) {
-			throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Weekend Rates for regular customer cannot be Null!");
+			throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_CUSTOMER_ENTERED_NULL,"Weekend Rates for customer cannot be Null!");
 		}
 		try {
 
@@ -117,7 +147,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 		catch(NullPointerException e) {
 			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be Null!");
 		}
-		
+
 		ratedHotels.add(ratedHotel.get(0));
 		for(int index =1; index<ratedHotel.size(); index++) {
 			Hotel hotel = ratedHotel.get(index);
@@ -129,8 +159,8 @@ public class HotelReservationImpl implements HotelReservationIF {
 			}
 		}
 		ratedHotelsReversed = ratedHotels.stream()
-								.sorted((rate1,rate2) -> ( calculateTotalRate(rate1, numberOfWeekdays, numberOfWeekends) - calculateTotalRate(rate2, numberOfWeekdays, numberOfWeekends)))
-								.collect(Collectors.toList());
+				.sorted((rate1,rate2) -> ( calculateTotalRate(rate1, numberOfWeekdays, numberOfWeekends) - calculateTotalRate(rate2, numberOfWeekdays, numberOfWeekends)))
+				.collect(Collectors.toList());
 		bestRatedHotels.add(0, "Hotel Name: "+ratedHotelsReversed.stream().findFirst().get().getHotelName()+" Rating: "+ratedHotelsReversed.stream().findFirst().get().getRating()+" Total Price: "+calculateTotalRate(ratedHotelsReversed.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends));
 		int pointer=1;
 		for(int index =1;index<ratedHotelsReversed.size();index++) {
@@ -144,10 +174,10 @@ public class HotelReservationImpl implements HotelReservationIF {
 		}
 		return bestRatedHotels;
 	}
-	
+
 	@Override
 	public ArrayList<String> findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
-		
+
 		List<Hotel> cheapestHotel = new ArrayList<Hotel>();
 		ArrayList<Hotel> cheapestHotels = new ArrayList<Hotel>();
 		ArrayList<Hotel> cheapestHotelsReversed = new ArrayList<Hotel>();
@@ -202,6 +232,6 @@ public class HotelReservationImpl implements HotelReservationIF {
 				break;
 		}
 		return cheapestBestRatedHotels;
-		
+
 	}
 }
