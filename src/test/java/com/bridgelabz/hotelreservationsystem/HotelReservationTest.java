@@ -286,4 +286,12 @@ public class HotelReservationTest {
 		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
 		Assert.assertTrue(("Hotel Name: BridgeWood Rating: 4 Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0))));
 	}
+	@Test
+	public void givenProperDates_WhenFindingBestRatedHotel_ShouldReturnNameOfBestRatedHotel() {
+
+		LinkedHashSet<Hotel> listOfHotels = hotelList();
+		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		ArrayList<String> bestRatedHotels = hotelReservationOperations.findBestRatedHotel(listOfHotels, "11Sep2020", "12Sep2020");
+		Assert.assertTrue(("Hotel Name: RidgeWood Rating: 5 Total Price: 370".equalsIgnoreCase(bestRatedHotels.get(0))));
+	}
 }

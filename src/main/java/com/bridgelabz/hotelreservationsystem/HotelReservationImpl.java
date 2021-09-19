@@ -86,8 +86,68 @@ public class HotelReservationImpl implements HotelReservationIF {
 	}
 
 	@Override
-	public ArrayList<String> findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
+	public ArrayList<String> findBestRatedHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
 
+		List<Hotel> ratedHotel = new ArrayList<Hotel>();
+		List<Hotel> ratedHotels = new ArrayList<Hotel>();
+		List<Hotel> ratedHotelsReversed = new ArrayList<Hotel>();
+		ArrayList<String> bestRatedHotels = new ArrayList<String>();
+		int numberOfWeekdays,numberOfWeekends;
+		try {
+			if(date1.length()==0 || date2.length()==0) {
+				throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_EMPTY,"Date cannot be Empty!");
+			}
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
+			try {
+				LocalDate startDate = LocalDate.parse(date1,formatter);
+				LocalDate endDate = LocalDate.parse(date2,formatter);
+				endDate = endDate.plusDays(1);
+				int totalDays =  (int) ChronoUnit.DAYS.between(startDate, endDate);
+				numberOfWeekdays = calculateTotalWeekDays(startDate, endDate);
+				numberOfWeekends = totalDays-calculateTotalWeekDays(startDate, endDate);
+				ratedHotel = listOfHotels.stream()
+						.sorted(Comparator.comparing(Hotel::getRating).reversed())
+						.collect(Collectors.toList());
+			}
+			catch(DateTimeParseException e) {
+				throw new HotelReservationExceptions(exceptionType.DATE_IN_INVALID_FORMAT,"Invalid Date format!");
+			}
+
+		}
+		catch(NullPointerException e) {
+			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be Null!");
+		}
+		
+		ratedHotels.add(ratedHotel.get(0));
+		for(int index =1; index<ratedHotel.size(); index++) {
+			Hotel hotel = ratedHotel.get(index);
+			if(ratedHotels.stream().findFirst().get().getRating()==hotel.getRating()) {
+				ratedHotels.add(hotel);
+			}
+			else {
+				break;
+			}
+		}
+		ratedHotelsReversed = ratedHotels.stream()
+								.sorted((rate1,rate2) -> ( calculateTotalRate(rate1, numberOfWeekdays, numberOfWeekends) - calculateTotalRate(rate2, numberOfWeekdays, numberOfWeekends)))
+								.collect(Collectors.toList());
+		bestRatedHotels.add(0, "Hotel Name: "+ratedHotelsReversed.stream().findFirst().get().getHotelName()+" Rating: "+ratedHotelsReversed.stream().findFirst().get().getRating()+" Total Price: "+calculateTotalRate(ratedHotelsReversed.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends));
+		int pointer=1;
+		for(int index =1;index<ratedHotelsReversed.size();index++) {
+			Hotel hotel = ratedHotelsReversed.get(index);
+			if(ratedHotelsReversed.stream().findFirst().get().getRating()==hotel.getRating()) {
+				bestRatedHotels.add(pointer, "Hotel Name: "+hotel.getHotelName()+" Rating: "+hotel.getRating()+" Total Price: "+calculateTotalRate(hotel, numberOfWeekdays, numberOfWeekends));
+				pointer++;
+			}
+			else
+				break;
+		}
+		return bestRatedHotels;
+	}
+	
+	@Override
+	public ArrayList<String> findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
+		
 		List<Hotel> cheapestHotel = new ArrayList<Hotel>();
 		ArrayList<Hotel> cheapestHotels = new ArrayList<Hotel>();
 		ArrayList<Hotel> cheapestHotelsReversed = new ArrayList<Hotel>();
@@ -142,5 +202,6 @@ public class HotelReservationImpl implements HotelReservationIF {
 				break;
 		}
 		return cheapestBestRatedHotels;
+		
 	}
 }
