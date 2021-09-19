@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptionType;
 
 public class HotelReservationImpl implements HotelReservationIF {
-	
+
 	public static int calculateTotalRate(Hotel hotel, int numberOfWeekdays, int numberOfWeekends) {
-		
+
 		int totalRate=0;
 		totalRate = ((hotel.getWeekdayRatesForRegularCustomer()*numberOfWeekdays)+(hotel.getWeekendRatesForRegularCustomer()*numberOfWeekends));
 		return totalRate;
 	}
 
 	public static int calculateTotalWeekDays(LocalDate start, LocalDate end) {
-		
+
 		int startDate = start.getDayOfWeek().getValue();
 		int endDate = end.getDayOfWeek().getValue();
 
@@ -75,40 +75,8 @@ public class HotelReservationImpl implements HotelReservationIF {
 		return hotel;
 	}
 
-
 	@Override
-	public String findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
-
-		Hotel cheapestHotel = null;
-		try {
-			if(date1.length()==0 || date2.length()==0) {
-				throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_EMPTY,"Date cannot be Empty!");
-			}
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-			try {
-				LocalDate startDate = LocalDate.parse(date1,formatter);
-				LocalDate endDate = LocalDate.parse(date2,formatter);
-				int totalDays =  (int) ChronoUnit.DAYS.between(startDate, endDate);
-				cheapestHotel = listOfHotels.stream()
-						.min((rate1,rate2) -> rate1.getWeekdayRatesForRegularCustomer()*totalDays - rate2.getWeekdayRatesForRegularCustomer()*totalDays)
-						.get();
-
-			}
-			catch(DateTimeParseException e) {
-				throw new HotelReservationExceptions(exceptionType.DATE_IN_INVALID_FORMAT,"Invalid Date format!");
-			}
-
-		}
-		catch(NullPointerException e) {
-			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be Null!");
-		}
-		if(cheapestHotel == null)
-			return "No Hotels Found";
-		return cheapestHotel.getHotelName();
-	}
-
-	@Override
-	public ArrayList<String> findCheapestHotelForBothWeekdayAndWeekend(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
+	public ArrayList<String> findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
 
 		List<Hotel> cheapestHotel = new ArrayList<Hotel>();
 		ArrayList<String> cheapestHotels = new ArrayList<String>();
@@ -123,7 +91,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 				LocalDate endDate = LocalDate.parse(date2,formatter);
 				endDate = endDate.plusDays(1);
 				int totalDays =  (int) ChronoUnit.DAYS.between(startDate, endDate);
-			    numberOfWeekdays = calculateTotalWeekDays(startDate, endDate);
+				numberOfWeekdays = calculateTotalWeekDays(startDate, endDate);
 				numberOfWeekends = totalDays-calculateTotalWeekDays(startDate, endDate);
 				cheapestHotel = listOfHotels.stream()
 						.sorted((rate1,rate2) -> ( calculateTotalRate(rate1, numberOfWeekdays, numberOfWeekends) - calculateTotalRate(rate2, numberOfWeekdays, numberOfWeekends)))
