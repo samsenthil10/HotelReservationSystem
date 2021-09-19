@@ -291,15 +291,6 @@ public class HotelReservationTest {
 		ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
 		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Rating: 3 Total Price: 220"));
 	}
-
-	@Test
-	public void givenProperDates_WhenFindingCheapestHotelForRegularCustomer_ShouldReturnNameOfCheapestHotel() {
-
-		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
-		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
-		Assert.assertTrue(("Hotel Name: BridgeWood Rating: 4 Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0))));
-	}
 	@Test
 	public void givenProperDates_WhenFindingBestRatedHotelForRegularCustomer_ShouldReturnNameOfBestRatedHotel() {
 
@@ -315,5 +306,13 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRewardCustomer();
 		ArrayList<String> bestRatedHotels = hotelReservationOperations.findBestRatedHotel(listOfHotels, "11Sep2020", "12Sep2020");
 		Assert.assertTrue(("Hotel Name: RidgeWood Rating: 5 Total Price: 140".equalsIgnoreCase(bestRatedHotels.get(0))));
+	}
+	@Test
+	public void givenProperDates_WhenFindingCheapestHotelForRegularCustomer_ShouldReturnNameOfCheapestHotel() {
+
+		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
+		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
+		Assert.assertTrue(("Hotel Name: BridgeWood Rating: 4 Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0))));
 	}
 }
