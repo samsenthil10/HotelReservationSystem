@@ -122,4 +122,42 @@ public class HotelReservationTest {
 		String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
 		Assert.assertTrue(hotelName.equalsIgnoreCase("Bridgewood"));
 	}
+	
+	@Test
+	public void givenDate1Null_WhenAddingHotel_ShouldThrowDateNull() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			try {
+				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
+			}
+			catch (Exception e) {
+				
+			}
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals("Date cannot be Null!",exceptionType.DATE_CANNOT_BE_NULL);			
+		}
+	}
+
+	@Test
+	public void givenDate2Null_WhenAddingHotel_ShouldThrowDateNull() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			try {
+				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
+			}
+			catch (Exception e) {
+				
+			}
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals("Date cannot be Null!",exceptionType.DATE_CANNOT_BE_NULL);			
+		}
+	}
 }
