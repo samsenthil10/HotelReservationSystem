@@ -11,7 +11,7 @@ import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptio
 public class HotelReservationImpl implements HotelReservationIF {
 
 	@Override
-	public Hotel addNewHotel(String name, Integer ratesForRegularCustomer) {
+	public Hotel addNewHotel(String name,Integer weekdayRatesForRegularCustomer, Integer weekendRatesForRegularCustomer) {
 
 		Hotel hotel = new Hotel();
 		try {
@@ -26,12 +26,21 @@ public class HotelReservationImpl implements HotelReservationIF {
 		}
 		try {
 
-			if(ratesForRegularCustomer < 0)
-				throw new HotelReservationExceptions(exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,"Rates for regular customer cannot be Negative!");
-			hotel.setRatesForRegularCustomer(ratesForRegularCustomer);
+			if(weekdayRatesForRegularCustomer < 0)
+				throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,"Weekday Rates for regular customer cannot be Negative!");
+			hotel.setWeekdayRatesForRegularCustomer(weekdayRatesForRegularCustomer);
 		}
 		catch(NullPointerException e) {
-			throw new HotelReservationExceptions(exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Rates for regular customer cannot be Null!");
+			throw new HotelReservationExceptions(exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Weekday Rates for regular customer cannot be Null!");
+		}
+		try {
+
+			if(weekendRatesForRegularCustomer < 0)
+				throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,"Weekend Rates for regular customer cannot be Negative!");
+			hotel.setWeekendRatesForRegularCustomer(weekendRatesForRegularCustomer);
+		}
+		catch(NullPointerException e) {
+			throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Weekend Rates for regular customer cannot be Null!");
 		}
 		return hotel;
 	}
@@ -51,7 +60,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 				LocalDate endDate = LocalDate.parse(date2,formatter);
 				int totalDays =  (int) ChronoUnit.DAYS.between(startDate, endDate);
 				cheapestHotel = listOfHotels.stream()
-						.min((rate1,rate2) -> rate1.getRatesForRegularCustomer()*totalDays - rate2.getRatesForRegularCustomer()*totalDays)
+						.min((rate1,rate2) -> rate1.getWeekdayRatesForRegularCustomer()*totalDays - rate2.getWeekdayRatesForRegularCustomer()*totalDays)
 						.get();
 
 			}
@@ -61,7 +70,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 
 		}
 		catch(NullPointerException e) {
-			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be NULL!");
+			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be Null!");
 		}
 		if(cheapestHotel == null)
 			return "No Hotels Found";
