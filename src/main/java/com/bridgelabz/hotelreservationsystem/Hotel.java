@@ -3,7 +3,8 @@ package com.bridgelabz.hotelreservationsystem;
 public class Hotel {
 	
 	private String hotelName;
-	private Integer ratesForRegularCustomer;
+	private Integer weekdayRatesForRegularCustomer;
+	private Integer weekendRatesForRegularCustomer;
 	
 	public String getHotelName() {
 		return hotelName;
@@ -11,10 +12,17 @@ public class Hotel {
 	public void setHotelName(String hotelName) {
 		this.hotelName = hotelName;
 	}
-	public Integer getRatesForRegularCustomer() {
-		return ratesForRegularCustomer;
+	public Integer getWeekdayRatesForRegularCustomer() {
+		return weekdayRatesForRegularCustomer;
 	}
-	public void setRatesForRegularCustomer(Integer ratesForRegularCustomer) {
-		this.ratesForRegularCustomer = ratesForRegularCustomer;
+	public void setWeekdayRatesForRegularCustomer(Integer weekdayRatesForRegularCustomer) {
+		this.weekdayRatesForRegularCustomer = weekdayRatesForRegularCustomer;
 	}
+	public Integer getWeekendRatesForRegularCustomer() {
+		return weekendRatesForRegularCustomer;
+	}
+	public void setWeekendRatesForRegularCustomer(Integer weekendRatesForRegularCustomer) {
+		this.weekendRatesForRegularCustomer = weekendRatesForRegularCustomer;
+	}
+	
 }
