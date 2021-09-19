@@ -46,7 +46,7 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Name cannot be Null!",exceptionType.NAME_ENTERED_NULL);			
+			Assert.assertEquals(e.type,exceptionType.NAME_ENTERED_NULL);			
 		}
 	}
 
@@ -63,7 +63,7 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Name cannot be Empty!",exceptionType.NAME_ENTERED_EMPTY);			
+			Assert.assertEquals(e.type,exceptionType.NAME_ENTERED_EMPTY);			
 		}
 	}
 
@@ -92,7 +92,7 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Rate for regular customer cannot be Null!",exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
+			Assert.assertEquals(e.type,exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
 		}
 	}
 
@@ -109,36 +109,32 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Rate for regular customer cannot be negative!",exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+			Assert.assertEquals(e.type,exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
 		}
 	}
 
 
 	@Test
 	public void givenProperDates_WhenFindingCheapestHotel_ShouldReturnNameOfCheapestHotel() {
-		
+
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
 		Assert.assertTrue(hotelName.equalsIgnoreCase("Bridgewood"));
 	}
-	
+
 	@Test
 	public void givenDate1Null_WhenAddingHotel_ShouldThrowDateNull() {
 
 		try {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			try {
-				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
-			}
-			catch (Exception e) {
-				
-			}
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Date cannot be Null!",exceptionType.DATE_CANNOT_BE_NULL);			
+			Assert.assertEquals(e.type,exceptionType.DATE_CANNOT_BE_NULL);			
 		}
 	}
 
@@ -148,54 +144,70 @@ public class HotelReservationTest {
 		try {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			try {
-				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
-			}
-			catch (Exception e) {
-				
-			}
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Date cannot be Null!",exceptionType.DATE_CANNOT_BE_NULL);			
+			Assert.assertEquals(e.type,exceptionType.DATE_CANNOT_BE_NULL);			
 		}
 	}
-	
+
 	@Test
 	public void givenDate1Empty_WhenAddingHotel_ShouldThrowDateEmpty() {
 
 		try {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			try {
-				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
-			}
-			catch (Exception e) {
-				
-			}
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Date cannot be Empty!",exceptionType.DATE_CANNOT_BE_EMPTY);			
+			Assert.assertEquals(e.type,exceptionType.DATE_CANNOT_BE_EMPTY);			
 		}
 	}
-	
+
 	@Test
 	public void givenDate2Empty_WhenAddingHotel_ShouldThrowDateNull() {
 
 		try {
 			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			try {
-				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
-			}
-			catch (Exception e) {
-				
-			}
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals("Date cannot be Empty!",exceptionType.DATE_CANNOT_BE_EMPTY);			
+			Assert.assertEquals(e.type,exceptionType.DATE_CANNOT_BE_EMPTY);			
+		}
+	}
+
+	@Test
+	public void givenDate1Invalid_WhenAddingHotel_ShouldThrowDateInvalid() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sep/2020","11Sep2020");
+		}
+		catch(HotelReservationExceptions e) {
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
+		}
+	}
+
+	@Test
+	public void givenDate2Invalid_WhenAddingHotel_ShouldThrowDateInvalid() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			@SuppressWarnings("unused")
+			String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11/Sep/2020");
+		}
+		catch(HotelReservationExceptions e) {
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
 		}
 	}
 }
