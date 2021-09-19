@@ -160,4 +160,42 @@ public class HotelReservationTest {
 			Assert.assertEquals("Date cannot be Null!",exceptionType.DATE_CANNOT_BE_NULL);			
 		}
 	}
+	
+	@Test
+	public void givenDate1Empty_WhenAddingHotel_ShouldThrowDateEmpty() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			try {
+				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
+			}
+			catch (Exception e) {
+				
+			}
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals("Date cannot be Empty!",exceptionType.DATE_CANNOT_BE_EMPTY);			
+		}
+	}
+	
+	@Test
+	public void givenDate2Empty_WhenAddingHotel_ShouldThrowDateNull() {
+
+		try {
+			LinkedHashSet<Hotel> listOfHotels = hotelList();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			try {
+				String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
+			}
+			catch (Exception e) {
+				
+			}
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals("Date cannot be Empty!",exceptionType.DATE_CANNOT_BE_EMPTY);			
+		}
+	}
 }
