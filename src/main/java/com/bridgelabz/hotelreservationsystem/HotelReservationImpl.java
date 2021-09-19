@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,7 +77,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 
 			if(rating < 0)
 				throw new HotelReservationExceptions(exceptionType.RATING_NEGATIVE,"Hotel rating cannot be Negative!");
-			hotel.setRating(weekendRatesForRegularCustomer);
+			hotel.setRating(rating);
 		}
 		catch(NullPointerException e) {
 			throw new HotelReservationExceptions(exceptionType.RATING_NULL,"Hotel rating cannot be Null!");
@@ -88,7 +89,9 @@ public class HotelReservationImpl implements HotelReservationIF {
 	public ArrayList<String> findCheapestHotel(LinkedHashSet<Hotel> listOfHotels, String date1, String date2) {
 
 		List<Hotel> cheapestHotel = new ArrayList<Hotel>();
-		ArrayList<String> cheapestHotels = new ArrayList<String>();
+		ArrayList<Hotel> cheapestHotels = new ArrayList<Hotel>();
+		ArrayList<Hotel> cheapestHotelsReversed = new ArrayList<Hotel>();
+		ArrayList<String> cheapestBestRatedHotels = new ArrayList<String>();
 		int numberOfWeekdays,numberOfWeekends;
 		try {
 			if(date1.length()==0 || date2.length()==0) {
@@ -114,18 +117,30 @@ public class HotelReservationImpl implements HotelReservationIF {
 		catch(NullPointerException e) {
 			throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_NULL,"Date cannot be Null!");
 		}
-		cheapestHotels.add(0, "Hotel Name: "+cheapestHotel.stream().findFirst().get().getHotelName()+" Total Price: "+calculateTotalRate(cheapestHotel.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends));
-		int pointer=1;
+		cheapestHotels.add(cheapestHotel.get(0));
 		for(int index =1; index<cheapestHotel.size(); index++) {
 			Hotel hotel = cheapestHotel.get(index);
-			if(calculateTotalRate(cheapestHotel.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends)==calculateTotalRate(hotel, numberOfWeekdays, numberOfWeekends)) {
-				cheapestHotels.add(pointer, "Hotel Name: "+hotel.getHotelName()+" Total Price: "+calculateTotalRate(hotel, numberOfWeekdays, numberOfWeekends));
-				pointer++;
+			if(calculateTotalRate(cheapestHotels.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends)==calculateTotalRate(hotel, numberOfWeekdays, numberOfWeekends)) {
+				cheapestHotels.add(hotel);
 			}
 			else {
 				break;
 			}
 		}
-		return cheapestHotels;
+		cheapestHotelsReversed= (ArrayList<Hotel>) cheapestHotels.stream()
+				.sorted(Comparator.comparing(Hotel::getRating).reversed())
+				.collect(Collectors.toList());
+		cheapestBestRatedHotels.add(0, "Hotel Name: "+cheapestHotelsReversed.stream().findFirst().get().getHotelName()+" Rating: "+cheapestHotelsReversed.stream().findFirst().get().getRating()+" Total Price: "+calculateTotalRate(cheapestHotelsReversed.stream().findFirst().get(), numberOfWeekdays, numberOfWeekends));
+		int pointer=1;
+		for(int index =1;index<cheapestHotelsReversed.size();index++) {
+			Hotel hotel = cheapestHotelsReversed.get(index);
+			if(cheapestHotelsReversed.stream().findFirst().get().getRating()==hotel.getRating()) {
+				cheapestBestRatedHotels.add(pointer, "Hotel Name: "+hotel.getHotelName()+" Rating: "+hotel.getRating()+" Total Price: "+calculateTotalRate(hotel, numberOfWeekdays, numberOfWeekends));
+				pointer++;
+			}
+			else
+				break;
+		}
+		return cheapestBestRatedHotels;
 	}
 }
