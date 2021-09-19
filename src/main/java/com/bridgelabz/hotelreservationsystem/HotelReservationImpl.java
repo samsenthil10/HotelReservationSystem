@@ -15,7 +15,7 @@ import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptio
 public class HotelReservationImpl implements HotelReservationIF {
 
 	@Override
-	public  LinkedHashSet<Hotel> hotelListForCustomer() {
+	public  LinkedHashSet<Hotel> hotelListForRegularCustomer() {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();

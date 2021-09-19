@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 
 public interface HotelReservationIF {
 	
-	public LinkedHashSet<Hotel> hotelListForCustomer();
+	public LinkedHashSet<Hotel> hotelListForRegularCustomer();
 	public LinkedHashSet<Hotel> hotelListForRewardCustomer();
 	public int calculateTotalRate(Hotel hotel, int numberOfWeekdays, int numberOfWeekends);
 	public int calculateTotalWeekDays(LocalDate start, LocalDate end);
