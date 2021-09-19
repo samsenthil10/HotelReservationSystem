@@ -13,11 +13,11 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90);
+		hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90, 3);
 		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150, 50);
+		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150, 50, 4);
 		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220, 150);
+		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220, 150, 5);
 		listOfHotels.add(hotel);
 		return listOfHotels;
 	}
@@ -27,7 +27,7 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90);
+		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90, 3);
 		int size = (int) listOfHotels.stream().count();
 		listOfHotels.add(hotel);
 		Assert.assertEquals(listOfHotels.size(), size+1);
@@ -41,7 +41,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel(null, 110, 90);
+			hotel = hotelReservationOperations.addNewHotel(null, 110, 90, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -58,7 +58,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("", 110, 90);
+			hotel = hotelReservationOperations.addNewHotel("", 110, 90, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -73,7 +73,7 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90);
+		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90, 3);
 		int size = (int) listOfHotels.stream().count();
 		listOfHotels.add(hotel);
 		Assert.assertEquals(listOfHotels.size(), size+1);
@@ -87,7 +87,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("LakeWood", null, 90);
+			hotel = hotelReservationOperations.addNewHotel("LakeWood", null, 90, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -97,14 +97,14 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenWeekdayRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerEmpty() {
+	public void givenWeekdayRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerNegative() {
 
 		try {
 
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("Lakewood", -100 ,90);
+			hotel = hotelReservationOperations.addNewHotel("Lakewood", -100 ,90, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -120,7 +120,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, null);
+			hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, null, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -130,19 +130,53 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenWeekendRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerEmpty() {
+	public void givenWeekendRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerNegative() {
 
 		try {
 
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("Lakewood", 100 ,-90);
+			hotel = hotelReservationOperations.addNewHotel("Lakewood", 100 ,-90, 3);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
 
 			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+		}
+	}
+    
+	@Test
+	public void givenRatingNull_WhenAddingHotel_ShouldThrowRateForRatingNull() {
+
+		try {
+
+			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+			Hotel hotel = new Hotel();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90, null);
+			listOfHotels.add(hotel);
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals(e.type,exceptionType.RATING_NULL);			
+		}
+	}
+
+	@Test
+	public void givenRatingNegative_WhenAddingHotel_ShouldThrowRatingNegative() {
+
+		try {
+
+			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+			Hotel hotel = new Hotel();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			hotel = hotelReservationOperations.addNewHotel("Lakewood", 100 ,90, -3);
+			listOfHotels.add(hotel);
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals(e.type,exceptionType.RATING_NEGATIVE);			
 		}
 	}
 
