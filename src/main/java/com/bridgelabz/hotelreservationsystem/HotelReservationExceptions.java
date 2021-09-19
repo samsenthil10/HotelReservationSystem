@@ -13,7 +13,9 @@ public class HotelReservationExceptions extends RuntimeException {
 		WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE,
 		DATE_CANNOT_BE_NULL,
 		DATE_CANNOT_BE_EMPTY,
-		DATE_IN_INVALID_FORMAT
+		DATE_IN_INVALID_FORMAT,
+		RATING_NULL,
+		RATING_NEGATIVE
 	}
 
 	exceptionType type;

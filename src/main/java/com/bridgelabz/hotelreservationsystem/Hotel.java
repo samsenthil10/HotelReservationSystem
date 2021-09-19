@@ -5,6 +5,7 @@ public class Hotel {
 	private String hotelName;
 	private Integer weekdayRatesForRegularCustomer;
 	private Integer weekendRatesForRegularCustomer;
+	private Integer rating;
 	
 	public String getHotelName() {
 		return hotelName;
@@ -23,6 +24,12 @@ public class Hotel {
 	}
 	public void setWeekendRatesForRegularCustomer(Integer weekendRatesForRegularCustomer) {
 		this.weekendRatesForRegularCustomer = weekendRatesForRegularCustomer;
+	}
+	public Integer getRating() {
+		return rating;
+	}
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 	
 }

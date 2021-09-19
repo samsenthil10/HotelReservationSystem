@@ -41,7 +41,7 @@ public class HotelReservationImpl implements HotelReservationIF {
 	}
 
 	@Override
-	public Hotel addNewHotel(String name,Integer weekdayRatesForRegularCustomer, Integer weekendRatesForRegularCustomer) {
+	public Hotel addNewHotel(String name,Integer weekdayRatesForRegularCustomer, Integer weekendRatesForRegularCustomer, Integer rating) {
 
 		Hotel hotel = new Hotel();
 		try {
@@ -72,6 +72,15 @@ public class HotelReservationImpl implements HotelReservationIF {
 		catch(NullPointerException e) {
 			throw new HotelReservationExceptions(exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL,"Weekend Rates for regular customer cannot be Null!");
 		}
+		try {
+
+			if(rating < 0)
+				throw new HotelReservationExceptions(exceptionType.RATING_NEGATIVE,"Hotel rating cannot be Negative!");
+			hotel.setRating(weekendRatesForRegularCustomer);
+		}
+		catch(NullPointerException e) {
+			throw new HotelReservationExceptions(exceptionType.RATING_NULL,"Hotel rating cannot be Null!");
+		}	
 		return hotel;
 	}
 
