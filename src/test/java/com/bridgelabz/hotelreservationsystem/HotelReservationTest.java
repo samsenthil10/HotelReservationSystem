@@ -13,11 +13,11 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("LakeWood", 3110);
+		hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90);
 		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150);
+		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150, 50);
 		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220);
+		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220, 150);
 		listOfHotels.add(hotel);
 		return listOfHotels;
 	}
@@ -27,7 +27,7 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110);
+		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90);
 		int size = (int) listOfHotels.stream().count();
 		listOfHotels.add(hotel);
 		Assert.assertEquals(listOfHotels.size(), size+1);
@@ -41,7 +41,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel(null, 110);
+			hotel = hotelReservationOperations.addNewHotel(null, 110, 90);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -58,7 +58,7 @@ public class HotelReservationTest {
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("", 110);
+			hotel = hotelReservationOperations.addNewHotel("", 110, 90);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
@@ -68,48 +68,81 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenRateForRegularCustomer_WhenAddingHotel_ShouldIncreaseSize() {
+	public void givenProperRatesForRegularCustomer_WhenAddingHotel_ShouldIncreaseSize() {
 
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110);
+		hotel = hotelReservationOperations.addNewHotel("Lakewood", 110, 90);
 		int size = (int) listOfHotels.stream().count();
 		listOfHotels.add(hotel);
 		Assert.assertEquals(listOfHotels.size(), size+1);
 	}
 
 	@Test
-	public void givenRateForRegularCustomerNull_WhenAddingHotel_ShouldThrowRateForRegularCustomerNull() {
+	public void givenWeekdayRateForRegularCustomerNull_WhenAddingHotel_ShouldThrowRateForRegularCustomerNull() {
 
 		try {
 
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("LakeWood", null);
+			hotel = hotelReservationOperations.addNewHotel("LakeWood", null, 90);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
+			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
 		}
 	}
 
 	@Test
-	public void givenRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerEmpty() {
+	public void givenWeekdayRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerEmpty() {
 
 		try {
 
 			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 			Hotel hotel = new Hotel();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-			hotel = hotelReservationOperations.addNewHotel("Lakewood", -100);
+			hotel = hotelReservationOperations.addNewHotel("Lakewood", -100 ,90);
 			listOfHotels.add(hotel);
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+		}
+	}
+	@Test
+	public void givenWeekendRateForRegularCustomerNull_WhenAddingHotel_ShouldThrowRateForRegularCustomerNull() {
+
+		try {
+
+			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+			Hotel hotel = new Hotel();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, null);
+			listOfHotels.add(hotel);
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
+		}
+	}
+
+	@Test
+	public void givenWeekendRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerEmpty() {
+
+		try {
+
+			LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
+			Hotel hotel = new Hotel();
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			hotel = hotelReservationOperations.addNewHotel("Lakewood", 100 ,-90);
+			listOfHotels.add(hotel);
+		}
+		catch(HotelReservationExceptions e) {
+
+			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
 		}
 	}
 
@@ -120,7 +153,7 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		String hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
-		Assert.assertTrue(hotelName.equalsIgnoreCase("Bridgewood"));
+		Assert.assertTrue(hotelName.equalsIgnoreCase("Lakewood"));
 	}
 
 	@Test
