@@ -8,19 +8,7 @@ import org.junit.Test;
 import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptionType;
 
 public class HotelReservationTest {
-
-	public  LinkedHashSet<Hotel> hotelList() {
-		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
-		Hotel hotel = new Hotel();
-		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
-		hotel = hotelReservationOperations.addNewHotel("LakeWood", 110, 90, 3);
-		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("BridgeWood", 150, 50, 4);
-		listOfHotels.add(hotel);
-		hotel = hotelReservationOperations.addNewHotel("RidgeWood", 220, 150, 5);
-		listOfHotels.add(hotel);
-		return listOfHotels;
-	}
+	
 	@Test
 	public void givenName_WhenAddingHotel_ShouldIncreaseSize() {
 
@@ -68,7 +56,7 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenProperRatesForRegularCustomer_WhenAddingHotel_ShouldIncreaseSize() {
+	public void givenProperRatesForCustomer_WhenAddingHotel_ShouldIncreaseSize() {
 
 		LinkedHashSet<Hotel> listOfHotels = new LinkedHashSet<>();
 		Hotel hotel = new Hotel();
@@ -80,7 +68,7 @@ public class HotelReservationTest {
 	}
 
 	@Test
-	public void givenWeekdayRateForRegularCustomerNull_WhenAddingHotel_ShouldThrowRateForRegularCustomerNull() {
+	public void givenWeekdayRateForCustomerNull_WhenAddingHotel_ShouldThrowRateForCustomerNull() {
 
 		try {
 
@@ -92,12 +80,12 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
+			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_CUSTOMER_ENTERED_NULL);			
 		}
 	}
 
 	@Test
-	public void givenWeekdayRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerNegative() {
+	public void givenWeekdayRateForCustomerNegative_WhenAddingHotel_ShouldThrowRateForCustomerNegative() {
 
 		try {
 
@@ -109,11 +97,11 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+			Assert.assertEquals(e.type,exceptionType.WEEKDAY_RATE_FOR_CUSTOMER_ENTERED_NEGATIVE);			
 		}
 	}
 	@Test
-	public void givenWeekendRateForRegularCustomerNull_WhenAddingHotel_ShouldThrowRateForRegularCustomerNull() {
+	public void givenWeekendRateForCustomerNull_WhenAddingHotel_ShouldThrowRateForCustomerNull() {
 
 		try {
 
@@ -125,12 +113,12 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NULL);			
+			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_CUSTOMER_ENTERED_NULL);			
 		}
 	}
 
 	@Test
-	public void givenWeekendRateForRegularCustomerNegative_WhenAddingHotel_ShouldThrowRateForRegularCustomerNegative() {
+	public void givenWeekendRateForCustomerNegative_WhenAddingHotel_ShouldThrowRateForCustomerNegative() {
 
 		try {
 
@@ -142,7 +130,7 @@ public class HotelReservationTest {
 		}
 		catch(HotelReservationExceptions e) {
 
-			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_REGULAR_CUSTOMER_ENTERED_NEGATIVE);			
+			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_CUSTOMER_ENTERED_NEGATIVE);			
 		}
 	}
     
@@ -183,9 +171,9 @@ public class HotelReservationTest {
 
 	@Test
 	public void givenProperDates_WhenFindingCheapestHotel_ShouldReturnNameOfCheapestHotel() {
-
-		LinkedHashSet<Hotel> listOfHotels = hotelList();
+		
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 		ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
 		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Rating: 3 Total Price: 220"));
 	}
@@ -194,8 +182,8 @@ public class HotelReservationTest {
 	public void givenDate1Null_WhenAddingHotel_ShouldThrowDateNull() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020",null);
 		}
@@ -209,8 +197,8 @@ public class HotelReservationTest {
 	public void givenDate2Null_WhenAddingHotel_ShouldThrowDateNull() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,null,"10Sep2020");
 		}
@@ -224,8 +212,8 @@ public class HotelReservationTest {
 	public void givenDate1Empty_WhenAddingHotel_ShouldThrowDateEmpty() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","");
 		}
@@ -239,8 +227,8 @@ public class HotelReservationTest {
 	public void givenDate2Empty_WhenAddingHotel_ShouldThrowDateNull() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"","10Sep2020");
 		}
@@ -254,8 +242,8 @@ public class HotelReservationTest {
 	public void givenDate1Invalid_WhenAddingHotel_ShouldThrowDateInvalid() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sep/2020","11Sep2020");
 		}
@@ -268,8 +256,8 @@ public class HotelReservationTest {
 	public void givenDate2Invalid_WhenAddingHotel_ShouldThrowDateInvalid() {
 
 		try {
-			LinkedHashSet<Hotel> listOfHotels = hotelList();
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 			@SuppressWarnings("unused")
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11/Sep/2020");
 		}
@@ -281,16 +269,16 @@ public class HotelReservationTest {
 	@Test
 	public void givenProperDates_WhenFindingCheapestHotelForBothWeekdayAndWeekend_ShouldReturnNameOfCheapestHotel() {
 
-		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
 		Assert.assertTrue(("Hotel Name: BridgeWood Rating: 4 Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0))));
 	}
 	@Test
 	public void givenProperDates_WhenFindingBestRatedHotel_ShouldReturnNameOfBestRatedHotel() {
-
-		LinkedHashSet<Hotel> listOfHotels = hotelList();
+		
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForCustomer();
 		ArrayList<String> bestRatedHotels = hotelReservationOperations.findBestRatedHotel(listOfHotels, "11Sep2020", "12Sep2020");
 		Assert.assertTrue(("Hotel Name: RidgeWood Rating: 5 Total Price: 370".equalsIgnoreCase(bestRatedHotels.get(0))));
 	}
