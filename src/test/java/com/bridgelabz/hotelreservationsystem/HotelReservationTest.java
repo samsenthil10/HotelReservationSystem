@@ -187,7 +187,7 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
-		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Total Price: 220"));
+		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Rating: 3 Total Price: 220"));
 	}
 
 	@Test
@@ -284,6 +284,6 @@ public class HotelReservationTest {
 		LinkedHashSet<Hotel> listOfHotels = hotelList();
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		ArrayList<String> cheapestHotels = hotelReservationOperations.findCheapestHotel(listOfHotels, "11Sep2020", "12Sep2020");
-		Assert.assertTrue(("Hotel Name: LakeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0)))&&("Hotel Name: BridgeWood Total Price: 200".equalsIgnoreCase(cheapestHotels.get(1))));
+		Assert.assertTrue(("Hotel Name: BridgeWood Rating: 4 Total Price: 200".equalsIgnoreCase(cheapestHotels.get(0))));
 	}
 }
