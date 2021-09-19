@@ -263,7 +263,20 @@ public class HotelReservationTest {
 			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
 			@SuppressWarnings("unused")
-			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"test","user");
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sept/2021","11Sep2021");
+		}
+		catch(HotelReservationExceptions e) {
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX);
+		}
+	}
+	@Test
+	public void givenDate2Invalid_WhenAddingHotel_ShouldThrowDateInvalidByRegex() {
+
+		try {
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
+			@SuppressWarnings("unused")
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2021","11/Sept/2021");
 		}
 		catch(HotelReservationExceptions e) {
 			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX);
