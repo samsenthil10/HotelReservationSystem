@@ -124,9 +124,11 @@ public class HotelReservationImpl implements HotelReservationIF {
 		ArrayList<String> bestRatedHotels = new ArrayList<String>();
 		int numberOfWeekdays,numberOfWeekends;
 		try {
-			if(date1.length()==0 || date2.length()==0) {
+			if(date1.length()==0 || date2.length()==0) 
 				throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_EMPTY,"Date cannot be Empty!");
-			}
+			String regex = "^([0-3])+([0-9])+([a-zA-Z]{3})+([1-9])+([0-9]{3})$";
+			if(!date1.matches(regex)||!date2.matches(regex))
+				throw new HotelReservationExceptions(exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX,"Invalid Date format!");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
 			try {
 				LocalDate startDate = LocalDate.parse(date1,formatter);
@@ -187,6 +189,9 @@ public class HotelReservationImpl implements HotelReservationIF {
 			if(date1.length()==0 || date2.length()==0) {
 				throw new HotelReservationExceptions(exceptionType.DATE_CANNOT_BE_EMPTY,"Date cannot be Empty!");
 			}
+			String regex = "^([0-3])+([0-9])+([a-zA-Z]{3})+([1-9])+([0-9]{3})$";
+			if(!date1.matches(regex)||!date2.matches(regex))
+				throw new HotelReservationExceptions(exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX,"Invalid Date format!");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
 			try {
 				LocalDate startDate = LocalDate.parse(date1,formatter);
@@ -232,6 +237,5 @@ public class HotelReservationImpl implements HotelReservationIF {
 				break;
 		}
 		return cheapestBestRatedHotels;
-
 	}
 }

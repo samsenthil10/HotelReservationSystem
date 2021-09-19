@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.bridgelabz.hotelreservationsystem.HotelReservationExceptions.exceptionType;
 
 public class HotelReservationTest {
-	
+
 	@Test
 	public void givenName_WhenAddingHotel_ShouldIncreaseSize() {
 
@@ -133,7 +133,7 @@ public class HotelReservationTest {
 			Assert.assertEquals(e.type,exceptionType.WEEKEND_RATE_FOR_CUSTOMER_ENTERED_NEGATIVE);			
 		}
 	}
-    
+
 	@Test
 	public void givenRatingNull_WhenAddingHotel_ShouldThrowRateForRatingNull() {
 
@@ -238,7 +238,7 @@ public class HotelReservationTest {
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10/Sep/2020","11Sep2020");
 		}
 		catch(HotelReservationExceptions e) {
-			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX);
 		}
 	}
 
@@ -252,19 +252,33 @@ public class HotelReservationTest {
 			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11/Sep/2020");
 		}
 		catch(HotelReservationExceptions e) {
-			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT);
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX);
 		}
 	}
-	
+
+	@Test
+	public void givenDate1Invalid_WhenAddingHotel_ShouldThrowDateInvalidByRegex() {
+
+		try {
+			HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
+			LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
+			@SuppressWarnings("unused")
+			ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"test","user");
+		}
+		catch(HotelReservationExceptions e) {
+			Assert.assertEquals(e.type,exceptionType.DATE_IN_INVALID_FORMAT_BY_REGEX);
+		}
+	}
+
 	@Test
 	public void givenProperDates_WhenFindingCheapestHotelForRegularCustomerInWeekdays_ShouldReturnNameOfCheapestHotel() {
-		
+
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
 		ArrayList<String> hotelName = hotelReservationOperations.findCheapestHotel(listOfHotels,"10Sep2020","11Sep2020");
 		Assert.assertTrue(hotelName.stream().findFirst().get().equalsIgnoreCase("Hotel Name: LakeWood Rating: 3 Total Price: 220"));
 	}
-	
+
 	@Test
 	public void givenProperDates_WhenFindingCheapestHotelForRegularCustomer_ShouldReturnNameOfCheapestHotel() {
 
@@ -275,7 +289,7 @@ public class HotelReservationTest {
 	}
 	@Test
 	public void givenProperDates_WhenFindingBestRatedHotelForRegularCustomer_ShouldReturnNameOfBestRatedHotel() {
-		
+
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRegularCustomer();
 		ArrayList<String> bestRatedHotels = hotelReservationOperations.findBestRatedHotel(listOfHotels, "11Sep2020", "12Sep2020");
@@ -283,7 +297,7 @@ public class HotelReservationTest {
 	}
 	@Test
 	public void givenProperDates_WhenFindingBestRatedHotelForRewardCustomer_ShouldReturnNameOfBestRatedHotel() {
-		
+
 		HotelReservationIF hotelReservationOperations = new HotelReservationImpl();
 		LinkedHashSet<Hotel> listOfHotels = hotelReservationOperations.hotelListForRewardCustomer();
 		ArrayList<String> bestRatedHotels = hotelReservationOperations.findBestRatedHotel(listOfHotels, "11Sep2020", "12Sep2020");
